@@ -1,0 +1,23 @@
+ALTER TABLE articoli ADD PRIMARY KEY (id);
+ALTER TABLE articoli DROP INDEX id;
+ALTER TABLE articoli ADD INDEX NewIndex (categoria);
+
+ALTER TABLE categorie ADD INDEX NewIndex (dipendenza);
+ALTER TABLE categorie DROP INDEX id;
+ALTER TABLE categorie ADD PRIMARY KEY (id);
+
+ALTER TABLE gruppi DROP INDEX idgruppo;
+ALTER TABLE gruppi ADD PRIMARY KEY (id);
+
+
+ALTER TABLE ordini CHANGE id id BIGINT(20)  AUTO_INCREMENT;
+ALTER TABLE ordini ADD PRIMARY KEY (id);
+ALTER TABLE ordini DROP INDEX id;
+ALTER TABLE ordini ADD INDEX NewIndex (ora);
+
+ALTER TABLE sequence ADD PRIMARY KEY (name);
+ALTER TABLE sequence DROP INDEX name;
+
+ALTER TABLE utenti CHANGE id id BIGINT(20)  NOT NULL AUTO_INCREMENT;
+ALTER TABLE utenti ADD PRIMARY KEY (id);
+ALTER TABLE utenti DROP INDEX id;

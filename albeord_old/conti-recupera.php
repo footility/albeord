@@ -1,4 +1,4 @@
-<?
+<?php
 include("core-config.php");
 
 if (!$PRIVILEGI["conti"]) redirect_to("home.php");
@@ -38,9 +38,9 @@ if($_REQUEST["stampa_singola"]){
 	</tr>
 	<tr bgcolor='#ffffff'>
 		<td>Dal</td>
-		<td><? disegna_cal("d_g","d_m", "d_a", unixtojd($_SESSION["dal_stat"])) ?></td>
+		<td><?php disegna_cal("d_g","d_m", "d_a", unixtojd($_SESSION["dal_stat"])) ?></td>
 		<td>Al</td>
-		<td><? disegna_cal("a_g","a_m", "a_a", unixtojd($_SESSION["al_stat"])) ?></td>
+		<td><?php disegna_cal("a_g","a_m", "a_a", unixtojd($_SESSION["al_stat"])) ?></td>
 		<td rowspan="2"><input type='submit' name='invia' class="btnsrc" value='Calcola' style="border:1px solid #000000; background-color:#ffffff"></td>
 	</tr>
 	<tr bgcolor='#ffffff'>
@@ -51,27 +51,27 @@ if($_REQUEST["stampa_singola"]){
 </table>
 <br>
 <table width='980' border='0' cellspacing='0' cellpadding='3' align='center' style="border:1px solid #cccccc" bgcolor="#FFFFFF">
-	
-	<?
+
+	<?php
 	if($_SESSION["dal_stat"] && $_SESSION["al_stat"]){
 		$q.= " AND oraoperazione BETWEEN ".$_SESSION["dal_stat"]." AND ".$_SESSION["al_stat"]." ";
 	}
 
 	$full_qu= "SELECT ordini.*,(SELECT utente FROM utenti WHERE utenti.id = ordini.idutente) AS utente
- 						FROM ordini 
+ 						FROM ordini
  						WHERE stato=1  AND idoperazione>0
  						AND camera LIKE '".$_REQUEST["camera"]."%' $q
- 						GROUP BY idoperazione 
+ 						GROUP BY idoperazione
 						ORDER BY oraoperazione DESC";
 
-	$res  = mysql_query($full_qu);
+	$res  = mysqli_query($full_qu);
 
-	if (!mysql_num_rows($res)){
+	if (!mysqli_num_rows($res)){
 		echo "<tr><td align='center' bgcolor='#ffffff' style='border:0px solid #000000; padding:3px'>Nessuna scheda trovata</td></tr>";
 	}
 
-	while ($scheda = mysql_fetch_assoc($res)){
-		
+	while ($scheda = mysqli_fetch_assoc($res)){
+
 		$cnt++;
 		?>
 			<tr bgcolor="#CCCCCC" style="font-weight:bold">
@@ -87,13 +87,13 @@ if($_REQUEST["stampa_singola"]){
 							<th style="font-size: 10px; text-align: right;">Quantit&agrave;</th>
 							<th style="font-size: 10px; text-align: right;">Prezzo</th>
 						</tr>
-					<?php
+					<?phpphp
 						$full_qu= "
-						SELECT ordini.articolo, count(ordini.id) AS quantita ,sum(ordini.prezzo) AS prezzo 
+						SELECT ordini.articolo, count(ordini.id) AS quantita ,sum(ordini.prezzo) AS prezzo
 						 FROM ordini  WHERE stato=1  AND idoperazione=".$scheda["idoperazione"]." GROUP BY ordini.articolo ORDER BY articolo, ora";
-						$resord  = mysql_query($full_qu);
+						$resord  = mysqli_query($full_qu);
 						$dataTot = array();
-						while ($dataArt = mysql_fetch_assoc($resord)){
+						while ($dataArt = mysqli_fetch_assoc($resord)){
 							$dataTot["quantita"]+= $dataArt["quantita"];
 							$dataTot["prezzo"]+= $dataArt["prezzo"];
 							?>
@@ -102,7 +102,7 @@ if($_REQUEST["stampa_singola"]){
 								<td align="right"><?= $dataArt["quantita"] ?></td>
 								<td align="right"><?= show_prezzo($dataArt["prezzo"]) ?>&euro;</td>
 							</tr>
-							<?php 
+							<?phpphp
 						}
 					?>
 						<tr bgcolor="#eeeeee">
@@ -113,15 +113,15 @@ if($_REQUEST["stampa_singola"]){
 					</table>
 				</td>
 			</tr>
-			<?
+			<?php
 		?>
 
-		<? if($cnt<mysql_num_rows($res)){ ?>
+		<?php if($cnt<mysqli_num_rows($res)){ ?>
 		<tr bgcolor="#ffffff">
 				<td colspan="4">&nbsp;<br />&nbsp;</td>
 			</tr>
-		<? } ?>
-		<?
+		<?php } ?>
+		<?php
 	}
 	?>
 </table>

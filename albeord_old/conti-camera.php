@@ -1,4 +1,4 @@
-<?
+<?php
 include("core-config.php");
 
 $IDcamera = $_REQUEST["camera"];
@@ -68,9 +68,9 @@ function drawtable(pezzis, into){
 		stringa +=  "<tr><td colspan='2'>&nbsp;</td><td align='right' onclick='ripristina_tutto();'><b><font color='#0000ff'>&laquo; Ripristina tutto</font></b></td></tr>";
 		stringa +=  "<tr><td colspan='3' align='center'>&nbsp;</td></tr>";
 		stringa +=  "<tr><td colspan='3' align='center'><input class='stornicontibtn' type='button' onclick='concludi_camera(0)' name='' value='Conto'>&nbsp;&nbsp;&nbsp;&nbsp;<input class='stornicontibtn' type='button' onclick='concludi_camera(2)' name='' value='Preventivo'>";
-		<? if ($PRIVILEGI["storni"]){ ?>
+		<?php if ($PRIVILEGI["storni"]){ ?>
 		stringa += "<br><br><input style='height:25px;font-size:15px;width:100px; ' class='stornicontibtn' type='button' onclick='concludi_camera(1)' name='' value='Storno'>";
-		<? } ?>
+		<?php } ?>
 		stringa += "</td></tr>";
 
 		stringa +=  "<tr><td colspan='3' align='center'>";
@@ -91,7 +91,7 @@ function drawtable(pezzis, into){
 var pezzi= new Array();
 var parz = new Array();
 
-<?
+<?php
 
 	$res=multi_query($dbh, "SELECT * FROM ordini WHERE stato=0 AND camera='$IDcamera' order by articolo");
 	$nr = multi_num_rows($res);

@@ -1,4 +1,4 @@
-<?
+<?php
 include("core-config.php");
 
 if (!$PRIVILEGI["schede"]) redirect_to("home.php");
@@ -34,7 +34,7 @@ $TrattamentiBaseAbiltati[$TrattamentiFirst]=$TrattamentiFirst;
 		<input class="inptext" autocomplete="off" type="text" name="camera" size="6" style="font-size:2em"/></td>
 		<td bgcolor='#FFFFFF'  width='50%' style='border:0px solid #000000'>
 		<input  class="inptext"  autocomplete="off" type="text" name="titolare"  style="font-size:2em"/></td>
-	</tr>	
+	</tr>
 	<!--<tr>
 		<td bgcolor='#cccccc' width='50%' style='border:1px solid #ffffff'><b>Adulti</b></td>
 		<td bgcolor='#cccccc'  width='50%' style='border:1px solid #ffffff'><b>Bambini</b></td>
@@ -48,23 +48,23 @@ $TrattamentiBaseAbiltati[$TrattamentiFirst]=$TrattamentiFirst;
 		<td bgcolor='#cccccc'  width='50%' style='border:1px solid #ffffff'><b>Al</b></td>
 	</tr>
 	<tr bgcolor='#ffffff'>
-		<td><? disegna_cal("d_g","d_m", "d_a", unixtojd()) ?></td>
-		<td><? disegna_cal("a_g","a_m", "a_a", unixtojd()+7) ?></td>
+		<td><?php disegna_cal("d_g","d_m", "d_a", unixtojd()) ?></td>
+		<td><?php disegna_cal("a_g","a_m", "a_a", unixtojd()+7) ?></td>
 	</tr>	-->
 	<tr>
 		<td bgcolor='#cccccc' colspan="2" style='border:1px solid #ffffff'><b>Trattamenti</b></td>
-	</tr>	
+	</tr>
 	<tr bgcolor='#ffffff'>
 		<td colspan="2">
 			<table cellpadding="3" cellspacing="1" width="80%">
 				<tr>
-					<? foreach ($Trattamenti as $idt =>  $trattamento){ ?>
+					<?php foreach ($Trattamenti as $idt =>  $trattamento){ ?>
 						<th align="left" width="<?= intval(100/count($Trattamenti)) ?>%">
 							<input type="checkbox" name="trattamenti_base[<?=$idt ?>]"  value="<?=$idt ?>"
 							 id="tr_bs_<?=$idt ?>" <?= ($TrattamentiBaseAbiltati[$idt])?"checked":"" ?> />
 							<label for="tr_bs_<?=$idt ?>"><?=$trattamento ?></label>
 						</th>
-					<? } ?>
+					<?php } ?>
 				</tr>
 			</table>
 		</td>

@@ -1,4 +1,4 @@
-<?
+<?php
 include("core-config.php");
 
 if (!$PRIVILEGI["admin"]) redirect_to("home.php");
@@ -29,7 +29,7 @@ if ($_REQUEST["dove"]) $_SESSION["dove"] =basename($_REQUEST["dove"]);
 		<td width='776' valign='top'>
 			<table width='776' border='0' cellspacing='1' cellpadding='2' align='center' bgcolor='#000000'>
 				<tr><td bgcolor='#ffffff'>
-				<? if (is_file("admin-".$_SESSION["dove"].".php")) include("admin-".$_SESSION["dove"].".php"); else echo "Seleziona un elenento dal menu di sinistra..."; ?>
+				<?php if (is_file("admin-".$_SESSION["dove"].".php")) include("admin-".$_SESSION["dove"].".php"); else echo "Seleziona un elenento dal menu di sinistra..."; ?>
 		</td>
 	</tr>
 </table>

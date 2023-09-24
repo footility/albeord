@@ -1,4 +1,4 @@
-<?
+<?php
 include("core-config.php");
 
 if (!$PRIVILEGI["utenti"]) redirect_to("home.php");
@@ -24,7 +24,7 @@ if (!$_SESSION["dove"]) $_SESSION["dove"]="creacat";
 		<td width='776' valign='top'>
 			<table width='776' border='0' cellspacing='1' cellpadding='2' align='center' bgcolor='#000000'>
 				<tr><td bgcolor='#ffffff'>
-				<? if (is_file("utenti-".$_SESSION["dove"].".php"))  include("utenti-".$_SESSION["dove"].".php"); else echo "Seleziona un elenento dal menu di sinistra..."; ?>
+				<?php if (is_file("utenti-".$_SESSION["dove"].".php"))  include("utenti-".$_SESSION["dove"].".php"); else echo "Seleziona un elenento dal menu di sinistra..."; ?>
 				</td></tr>
 		</td>
 	</tr>

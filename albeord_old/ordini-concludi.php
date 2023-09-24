@@ -1,4 +1,4 @@
-<?
+<?php
 include("core-config.php");
 
 if (!$PRIVILEGI["ordini"]) redirect_to("home.php");
@@ -28,10 +28,10 @@ if (!$IDOrdine){
 
 
 
-<? head_page() ?>
-<? top_menu() ?><br>
-<? if ($_REQUEST["stampa"]==1) stampawbs($dbh, $IDOrdine, 1); ?>
-		<?
+<?php head_page() ?>
+<?php top_menu() ?><br>
+<?php if ($_REQUEST["stampa"]==1) stampawbs($dbh, $IDOrdine, 1); ?>
+		<?php
 			$ordine=multi_single_query($dbh, "SELECT * FROM ordini WHERE idordine=$IDOrdine LIMIT 1",ALL);
 			echo "<table cellspacing='0' cellpadding='3' width='50%' bgcolor='#ffffff' align='center'>
 							<tr><td colspan='2'><b>Utente:</b> ".$ordine["idutente"]."</td><td colspan='2'><b>Data ordine:</b> ".date("d-m-Y H:i",$ordine["ora"])."</td></tr>
@@ -57,4 +57,4 @@ if (!$IDOrdine){
 		?>
 </body>
 </html>
-<? } ?>
+<?php } ?>

@@ -1,4 +1,4 @@
-<?
+<?php
 if (!$PRIVILEGI["utenti"]) redirect_to("home.php");
 
 function disegautenti($dbh,$sel=''){
@@ -79,11 +79,11 @@ echo "<center>$msg</center>";
 	<tr>
 		<td valign='top'>
 			<table cellspacing='1' cellpadding='2' bgcolor='#000000' width='200'>
-				<? disegautenti($dbh,$_REQUEST["selected"]); ?>
+				<?php disegautenti($dbh,$_REQUEST["selected"]); ?>
 			</table>
 		</td>
 		<td valign='top' align='center'>
-		<? if(isset($_REQUEST["selected"])){
+		<?php if(isset($_REQUEST["selected"])){
 		if (sizeof((array)$err)==0){
 			$data=multi_single_query($dbh, "SELECT * FROM utenti WHERE id=".intval($_REQUEST["selected"]), ALL);
 			$data["privilegi"]=unserialize($data["privilegi"]);
@@ -100,13 +100,13 @@ echo "<center>$msg</center>";
 					<tr><td bgcolor='#cccccc'>Nome</td><td><input type='text' name='utente' value='<?= htmlentities($data["utente"],ENT_QUOTES) ?>' class="inptext"></td></tr>
 					<tr><td bgcolor='#cccccc'>Password</td><td><input type='password' name='pwd1'  value='' class="inptext"></td></tr>
 					<tr><td nowrap bgcolor='#cccccc'>Riperti password</td><td><input type='password' name='pwd2'  value='' class="inptext"></td></tr>
-					<tr><td nowrap bgcolor='#cccccc'>Gruppo</td><td><select name='idgruppo'><? disegnagruppi($dbh, $data["idgruppo"])  ?></select></td></tr>
+					<tr><td nowrap bgcolor='#cccccc'>Gruppo</td><td><select name='idgruppo'><?php disegnagruppi($dbh, $data["idgruppo"])  ?></select></td></tr>
 					<tr><td nowrap bgcolor='#cccccc'>Path Progrmma Stampa</td><td><input type='text' name='pathstampa'  size='40' value='<?= htmlentities($data["pathstampa"],ENT_QUOTES) ?>' class="inptext"><br>(spazi non consentiti)</td></tr>
 					<tr><td nowrap bgcolor='#cccccc'>Nome Stampante</td><td><input type='text' name='stampante'  size='40' value='<?= htmlentities($data["stampante"],ENT_QUOTES) ?>' class="inptext"><br>(sono consentite anche le stampanti di rete tipo "\\SERVER\STAMPANTE". se il campo non  compilato verra usata la stampante predefinita di sistema)</td></tr>
 					<tr><td bgcolor='#cccccc' valign='top'>Privilegi</td><td>
-					<? foreach($GlobPrivilegi as $key => $val){ ?>
+					<?php foreach($GlobPrivilegi as $key => $val){ ?>
 						<input type='checkbox' name='privilegi[<?= $key ?>]' value='1' <?= (($data["privilegi"][$key]==1)?"checked":"") ?>> <?= $val ?><br>
-					<? } ?>
+					<?php } ?>
 						<input type='checkbox' name='privilegi[storni]' value='1' <?= (($data["privilegi"]["storni"]==1)?"checked":"") ?>> Storni<br>
 					</td>
 					</tr>
@@ -116,9 +116,9 @@ echo "<center>$msg</center>";
 					</tr>
 					</form>
 			</table>
-			<? }else{	?>
+			<?php }else{	?>
 				Seleziona un utente...
-			<? } ?>
+			<?php } ?>
 		</td>
 	</tr>
 </table>

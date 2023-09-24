@@ -1,4 +1,4 @@
-<?
+<?php
 if (!$PRIVILEGI["utenti"]) redirect_to("home.php");
 
 if (strlen($_REQUEST["invia"])>0){
@@ -18,7 +18,7 @@ if (strlen($_REQUEST["invia"])>0){
 <form method='POST'>
 <table cellspacing='0' cellpadding='3' width='550'>
 	<tr bgcolor='#cccccc'><td>Gruppo</td><td>Elimina</td></tr>
-		<?
+		<?php
 		$res=multi_query($dbh, "SELECT * FROM gruppi order by nome");
 		for ($i=0; $i<multi_num_rows($res); $i++){
 			$data=multi_fetch_array($res, $i);
@@ -27,7 +27,7 @@ if (strlen($_REQUEST["invia"])>0){
 			<td><input type='text' size='40' name='nome[<?= $data["id"] ?>]' value='<?= htmlentities($data["nome"],ENT_QUOTES); ?>' class="inptext"></td>
 			<td><input type='checkbox' name='elimina[<?= $data["id"] ?>]' value='1'></td>
 		</tr>
-		<? }	?>
+		<?php }	?>
 		<tr bgcolor='#cccccc'>
 			<td align='center' colspan='2'>Nuovo gruppo</td>
 		</tr>

@@ -1,4 +1,4 @@
-<?
+<?php
  $SKIP=1;
 include("../core-config.php");
 
@@ -34,7 +34,7 @@ $Modelli["S1"]=array( // scontrino
 );
 
 
-$Modelli["A4"]=array( 
+$Modelli["A4"]=array(
     "spacer"=>60,
     "head"=>"
             [logo600][l]
@@ -61,7 +61,7 @@ $Modelli["A4"]=array(
             [f7][x30]|Totale:|[x960]|[n30,%s]|[x1000]||[l][l]
             [f5][x30]|Ora stampa: %s|[l]
     ",
-    
+
 );
 $Modelli["A41"]=array(
     "spacer"=>60,
@@ -144,17 +144,17 @@ if ($tipo==10){//preventivo
 if ($tipo==10){//stats
  	$ary["spacer"]=$Modelli[$Mod]["spacer"];
 
-	
+
 	$scheda  = multi_single_query($dbh, "SELECT * FROM schede where id= $data","ALL");
 	$scheda["dal"]  = multi_single_query($dbh, "SELECT min(dal) FROM schede_periodi where idscheda= $data");
 	$scheda["al"]  =  multi_single_query($dbh, "SELECT max(al) FROM schede_periodi where idscheda= $data");
 	$prezzi  = getPrezziScheda($dbh, $data);
-	
-	
+
+
 	$ST[1]="Prenottamento e colazione";
 	$ST[2]="Mezza Pensione";
 	$ST[3]="Pensione Completa";
-	
+
 	$stringa = $Modelli[$Mod]["head"];
 	$stringa.="[f5][x100]|Camera:|[x350]|".$scheda["camera"]."|[l]";
 	if($scheda["titolare"])
@@ -162,39 +162,39 @@ if ($tipo==10){//stats
 	$stringa.="[f5][x100]|Arrivo:|[x350]|".date("d/m/Y",$scheda["dal"])."|[l]";
 	$stringa.="[f5][x100]|Partenza:|[x350]|".date("d/m/Y",$scheda["al"])."|[l]";
 	$stringa.="[l]"	;
-	
+
 	foreach ($prezzi["trattamenti"] as $trattamento => $parti){
 		  $stringa.="[f5][x100]| - ".$ST[$trattamento]."|[l]";
 		  foreach ($parti as $parte){
 		  		$stringa.="[f4][x150]| Pers. n.  ".$parte["persone"]."|[x500]| Per giorni n. ".$parte["giorni"]." |[x960]|[n27,".show_prezzo2($parte["parziale"])."]|[x1000]|euro|[x1230]|Totale|[x1600]|[n27,".show_prezzo2($parte["totale"])."]|[x1640]|euro|[l]|"; //|[x1000]|euro|[x1300]|Totale|[n27,".show_prezzo2($prezzo*$giorni)."]|[x1520]|euro|
-		  } 
+		  }
 		  $stringa.="|[l][l]|";
 	}
-		
+
 	if(count($prezzi["servizi+"])){
-		$stringa.="[f5][x100]| - Extra|[l]";	
+		$stringa.="[f5][x100]| - Extra|[l]";
 		foreach ($prezzi["servizi+"] as $idservizio => $data){
-			$stringa.="[f4][x150]|".$data["nome"]."|[x950]|[x1600]|[n27,".show_prezzo2($data["prezzo"])."]|[x1640]|euro|[l]|"; 
+			$stringa.="[f4][x150]|".$data["nome"]."|[x950]|[x1600]|[n27,".show_prezzo2($data["prezzo"])."]|[x1640]|euro|[l]|";
 		}
 		$stringa.="|[l][l]|";
 	}
 	if(count($prezzi["supplementi"])){
 
-		$stringa.="[f5][x100]|Supplementi|[x950]|[x1600]|[n27,".show_prezzo2(array_sum($prezzi["supplementi"]))."]|[x1640]|euro|[l]|"; 
+		$stringa.="[f5][x100]|Supplementi|[x950]|[x1600]|[n27,".show_prezzo2(array_sum($prezzi["supplementi"]))."]|[x1640]|euro|[l]|";
 
 		$stringa.="|[l][l]|";
 	}
 
-	$stringa.="[f4][x100]|Sub totale|[x950]|[x1600]|[n27,".show_prezzo2($prezzi["subtotale"])."]|[x1640]|euro|[l]|"; 
+	$stringa.="[f4][x100]|Sub totale|[x950]|[x1600]|[n27,".show_prezzo2($prezzi["subtotale"])."]|[x1640]|euro|[l]|";
 	foreach ((array)$prezzi["servizi-"] as $idservizio => $data){
-		$stringa.="[f4][x150]|".$data["nome"]."|[x950]|[x1600]|[n27,-".show_prezzo2($data["prezzo"])."]|[x1640]|euro|[l]|"; 
+		$stringa.="[f4][x150]|".$data["nome"]."|[x950]|[x1600]|[n27,-".show_prezzo2($data["prezzo"])."]|[x1640]|euro|[l]|";
 	}
 	$stringa.="|[l][l][x1730][d2,100,-1]|[l]|";
-	
-	$stringa.="[f5][x100]|Totale|[x950]|[x1600]|[n27,".show_prezzo2($prezzi["totale"])."]|[x1640]|euro|[l]|"; 
-	
+
+	$stringa.="[f5][x100]|Totale|[x950]|[x1600]|[n27,".show_prezzo2($prezzi["totale"])."]|[x1640]|euro|[l]|";
+
 	$stringa.="[l][f3][x30]|Ora stampa: ".date("d/m/Y H:i:s")."|[l]";
-	
+
 }elseif ($tipo==5 | $tipo==6){//stats
     $ary["spacer"] = 60;
     list($dal, $al)=explode('*', $data);
@@ -221,7 +221,7 @@ if ($tipo==10){//stats
                 [f5]
             ";
         }
-    
+
     $res=multi_query($dbh, "SELECT * FROM gruppi order by nome");
 	for($i=0; $i<multi_num_rows($res); $i++){
 		$data = multi_fetch_array($res, $i);
@@ -229,12 +229,12 @@ if ($tipo==10){//stats
 		$p    = (integer) multi_single_query($dbh, "SELECT sum(ordini.prezzo) FROM ordini, utenti, gruppi WHERE (ordini.stato=1 OR ordini.stato=0) AND ora>=$dal AND ora<=$al and ordini.idutente=utenti.id AND utenti.idgruppo=gruppi.id AND gruppi.id=".$data["id"]);
 		$qt  += $q;
 		$pt  += $p;
-		
+
 		if($tipo==6){
 	       $stringa .="[s60][f5][x100]|".$data["nome"]."|[x550][f2]|Articoli: $q|[x800]|Valore: |[f5][r10][x920]|$p |[l]";
 	    }else{
     	   $stringa .="[s60][f5][x100]|".$data["nome"]."|[x550]|$q|[x1000][n28,".show_prezzo2($p)."]|[x1050]||[l]";
-    	   
+
         }
 	    if($tipo==6){
 

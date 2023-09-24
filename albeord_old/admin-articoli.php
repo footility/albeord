@@ -1,4 +1,4 @@
-<?
+<?php
 if (!$PRIVILEGI["admin"]) redirect_to("home.php");
 
 function disegnacat($dbh, $idcatsupp=0, $tabs='', $sel){
@@ -32,18 +32,18 @@ if ($_REQUEST["selected"])$_SESSION["curcat"]=intval($_REQUEST["selected"]);
 	<tr>
 		<td valign='top' width="1%">
 			<table cellspacing='1' cellpadding='2' bgcolor='#000000' width='200' style='cursor:pointer'>
-				<? disegnacat($dbh, 0, '', $_SESSION["curcat"]); ?>
+				<?php disegnacat($dbh, 0, '', $_SESSION["curcat"]); ?>
 			</table>
 		</td>
 		<td valign='top' width="99%">
-		<? if($_SESSION["curcat"]){ ?>
+		<?php if($_SESSION["curcat"]){ ?>
 			<table  cellspacing='0' cellpadding='3' width='100%'>
 					<form method='POST'>
 					<tr bgcolor='#cccccc'>
 						<td align='center' colspan='3' style="border-bottom:1px solid #ffffff">Elenco articoli <b><?= multi_single_query($dbh, "SELECT nome FROM categorie WHERE id=".$_SESSION["curcat"]) ?></b></td>
 					</tr>
 					<tr bgcolor='#cccccc'><td>Nome</td><td>Prezzo</td><td>Elimina</td></tr>
-					<?
+					<?php
 					$res=multi_query($dbh, "SELECT * FROM articoli WHERE categoria=".$_SESSION["curcat"]);
 					for ($i=0; $i<multi_num_rows($res); $i++){
 						$data=multi_fetch_array($res, $i);
@@ -53,7 +53,7 @@ if ($_REQUEST["selected"])$_SESSION["curcat"]=intval($_REQUEST["selected"]);
 						<td nowrap><input  type='text' size='6' name='prezzo[<?= $data["id"] ?>]' value='<?= show_prezzo($data["prezzo"]); ?>' class="inptext"> &euro;</td>
 						<td><input type='checkbox' name='elimina[<?= $data["id"] ?>]' value='1'></td>
 					</tr>
-					<? }	?>
+					<?php }	?>
 					<tr bgcolor='#cccccc'>
 						<td align='center' colspan='3' style="border-top:1px solid #ffffff">Nuovo Articolo</td>
 					</tr>
@@ -68,7 +68,7 @@ if ($_REQUEST["selected"])$_SESSION["curcat"]=intval($_REQUEST["selected"]);
 					<input type='hidden' name='curcat' value='<?= $_SESSION["curcat"] ?>'>
 					</form>
 			</table>
-		<? } ?>
+		<?php } ?>
 		</td>
 	</tr>
 </table>

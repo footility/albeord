@@ -1,4 +1,4 @@
-<?
+<?php
 if (!$PRIVILEGI["admin"]) redirect_to("home.php");
 include_once("lib/tar.class.php");
 
@@ -6,7 +6,7 @@ if ($_REQUEST["expb"]){
 
     $tar = new tar();
     $oldcwd=getcwd();
-    
+
     $dir = str_replace("www\\albeord", 'mysql\\data\\albeord',$oldcwd);
     chdir($dir);
     $dir=".";

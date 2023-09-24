@@ -1,4 +1,4 @@
-<?
+<?php
 include("core-config.php");
 
 if (!$PRIVILEGI["schede"]) redirect_to("home.php");
@@ -16,7 +16,7 @@ top_menu();
 <br>
 <table border='0' cellspacing='1' cellpadding='3' align='center' width='980' bgcolor='#000000'>
 	<tr bgcolor='#cccccc'><td bgcolor='#cccccc' colspan='9 ' width='980' style='border:0px solid #000000'><b>Schede attive</b></td></tr>
-	<?
+	<?php
 		$artcol = 9;
 		$fw     = 980;
 

@@ -1,4 +1,4 @@
-<?php
+<?phpphp
 
 dl("php_printer.dll");
 
@@ -67,7 +67,7 @@ if (!$handle){
 	printer_abort($handle);
     printer_close($handle);
 	sleep(5);
-	exit;	
+	exit;
 }
 
 $doc_ok=@printer_start_doc($handle, "Stampa".md5($httpdata["stampa"]));
@@ -103,7 +103,7 @@ $pagn   = 1;
 foreach ($pezzi as $righe){
     foreach (explode('|',$righe) as $stringa){
         if (!$stringa) continue;
-        
+
         if (preg_match('/\[f[0-9]+\]/',$stringa)){
             $pos = strpos($stringa, '[f')+2;
             $sz  = $stringa{$pos};
@@ -129,10 +129,10 @@ foreach ($pezzi as $righe){
             $str = substr($stringa, $in, $ou-$in);
             list($Wp, $Xa, $Ya)=explode(',', $str);
             if ($Ya==-1)  $Ya=$inizio;
-            
+
             $penna = printer_create_pen(PRINTER_PEN_SOLID, $Wp, "000000");
             printer_select_pen($handle, $penna);
-            
+
             printer_draw_line($handle, $xpos, $inizio-2, $Xa, $Ya-2);
         }
         if (strstr($stringa,'[n')){
@@ -148,7 +148,7 @@ foreach ($pezzi as $righe){
             $st  = substr($stringa, $in, $ou-$in);
             $spacer=$st;
         }
-        
+
     	if (!strstr($stringa,"[")){
             printer_draw_text($handle, $stringa, $xpos, $inizio);
         }
@@ -156,9 +156,9 @@ foreach ($pezzi as $righe){
             $in  = strpos($stringa, '[logo')+5;
             $ou  = strpos($stringa, ']', $in);
             $maxw= substr($stringa, $in, $ou-$in);
-            
+
     		$infoimg = getimagesize($logo);
-    		
+
     		$h       = (($maxw/$infoimg[0])*$infoimg[1]);
     		printer_draw_bmp($handle, $logo, $xpos, $inizio, $maxw, $h);
     		$inizio += $h;

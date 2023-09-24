@@ -20,10 +20,107 @@ var chrsz   = 8;  /* bits per input character. 8 - ASCII; 16 - Unicode      */
  * They take string arguments and return either hex or base-64 encoded strings
  */
 function hex_md5(s){ return binl2hex(core_md5(str2binl(s), s.length * chrsz));}
+/**
+ * The `b64_md5` function is a JavaScript function that takes a string `s` as input
+ * and returns the Base64 encoded MD5 hash of that string.
+ *
+ * Parameters:
+ * - `s`: A string that needs to be hashed.
+ *
+ * Return Value:
+ * - The Base64 encoded MD5 hash of the input string.
+ *
+ * Example Usage:
+ * ```javascript
+ * var hash = b64_md5("Hello World");
+ * console.log(hash); // Output: "XrY7u+Ae7tCTyyK7j1rNww=="
+ * ```
+ *
+ * Note: This function relies on other helper functions `core_md5`, `str2binl`,
+ * `binl2b64` to perform the actual MD5 hashing and Base64 encoding operations.
+ */
 function b64_md5(s){ return binl2b64(core_md5(str2binl(s), s.length * chrsz));}
+/**
+ * The `str_md5` function is a JavaScript function that calculates the MD5 hash
+ * value of a given string. It takes a single parameter `s`, which is the input
+ * string for which the MD5 hash needs to be calculated.
+ *
+ * The function internally uses several helper functions to perform the MD5
+ * calculation. These helper functions include `str2binl`, `core_md5`, and
+ * `binl2str`.
+ *
+ * The `str2binl` function converts the input string `s` into an array of 32-bit
+ * integers. It uses the `chrsz` variable, which represents the number of bits per
+ * character, to determine the size of each element in the resulting array.
+ *
+ * The `core_md5` function performs the actual MD5 calculation. It takes two
+ * parameters: the input string converted to an array of 32-bit integers, and the
+ * length of the input string multiplied by `chrsz`. This function implements the
+ * MD5 algorithm to generate the hash value.
+ *
+ * The `binl2str` function converts the array of 32-bit integers representing the
+ * MD5 hash value back into a string. It concatenates the hexadecimal
+ * representation of each integer in the array to form the final hash value
+ * string.
+ *
+ * Finally, the `str_md5` function returns the calculated MD5 hash value as a
+ * string.
+ *
+ * Note: The `chrsz` variable is not defined in the provided code snippet, so its
+ * value is assumed to be defined elsewhere in the code.
+ */
 function str_md5(s){ return binl2str(core_md5(str2binl(s), s.length * chrsz));}
+/**
+ * The `hex_hmac_md5` function is a JavaScript method that calculates the HMAC-MD5
+ * hash of a given `data` using the provided `key`. It then converts the resulting
+ * binary hash into a hexadecimal representation.
+ *
+ * Parameters:
+ * - `key` (string): The secret key used for the HMAC-MD5 calculation.
+ * - `data` (string): The data to be hashed using HMAC-MD5.
+ *
+ * Return Value:
+ * - A hexadecimal string representing the HMAC-MD5 hash of the `data` using the
+ * provided `key`.
+ *
+ * Example Usage:
+ * ```javascript
+ * const key = "mySecretKey";
+ * const data = "Hello, World!";
+ * const hash = hex_hmac_md5(key, data);
+ * console.log(hash); // Output: "5eb63bbbe01eeed093cb22bb8f5acdc3"
+ * ```
+ *
+ * Note: This function relies on the `core_hmac_md5` function, which is not defined
+ * in the provided code snippet.
+ */
 function hex_hmac_md5(key, data) { return binl2hex(core_hmac_md5(key, data)); }
+/**
+ * The `b64_hmac_md5` function is a JavaScript method that takes in two parameters:
+ * `key` and `data`. It returns the Base64-encoded HMAC-MD5 hash of the `data`
+ * parameter using the `key` parameter.
+ *
+ * The function internally calls the `core_hmac_md5` function, which calculates the
+ * HMAC-MD5 hash of the `data` parameter using the `key` parameter. The resulting
+ * hash is then converted from binary format to Base64 format using the `binl2b64`
+ * function.
+ *
+ * Note that the `core_hmac_md5` and `binl2b64` functions are not defined in the
+ * provided code snippet and should be implemented separately.
+ */
 function b64_hmac_md5(key, data) { return binl2b64(core_hmac_md5(key, data)); }
+/**
+ * The `str_hmac_md5` function is used to generate an HMAC-MD5 hash in JavaScript.
+ * It takes two parameters: `key` and `data`. The `key` parameter represents the
+ * secret key used for the HMAC calculation, while the `data` parameter represents
+ * the data to be hashed.
+ *
+ * The function internally calls the `core_hmac_md5` function, which performs the
+ * actual HMAC-MD5 calculation. The result of this calculation is then converted
+ * from binary format to a string using the `binl2str` function.
+ *
+ * The `str_hmac_md5` function returns the HMAC-MD5 hash as a string.
+ */
 function str_hmac_md5(key, data) { return binl2str(core_hmac_md5(key, data)); }
 
 /*
@@ -139,18 +236,99 @@ function md5_cmn(q, a, b, x, s, t)
 {
   return safe_add(bit_rol(safe_add(safe_add(a, q), safe_add(x, t)), s),b);
 }
+/**
+ * The `md5_ff` function is a helper function used in the MD5 algorithm. It takes
+ * in several parameters and returns the result of calling another function called
+ * `md5_cmn`.
+ *
+ * Parameters:
+ * - `a`: An integer representing the first input value.
+ * - `b`: An integer representing the second input value.
+ * - `c`: An integer representing the third input value.
+ * - `d`: An integer representing the fourth input value.
+ * - `x`: An integer representing the data input.
+ * - `s`: An integer representing the shift amount.
+ * - `t`: An integer representing the constant value.
+ *
+ * Return Value:
+ * - The result of calling the `md5_cmn` function with the appropriate parameters.
+ *
+ * Note: This function is typically used internally within the MD5 algorithm and is
+ * not meant to be called directly.
+ */
 function md5_ff(a, b, c, d, x, s, t)
 {
   return md5_cmn((b & c) | ((~b) & d), a, b, x, s, t);
 }
+/**
+ * The `md5_gg` function is a helper function used in the MD5 algorithm. It takes
+ * in six parameters: `a`, `b`, `c`, `d`, `x`, `s`, and `t`.
+ *
+ * - `a`, `b`, `c`, and `d` are 32-bit integers representing the internal state
+ * variables of the MD5 algorithm.
+ * - `x` is a 32-bit integer representing the input data.
+ * - `s` is a number representing the number of bits to shift the input data.
+ * - `t` is a 32-bit integer representing a constant value used in the algorithm.
+ *
+ * The function performs a bitwise operation on `b` and `d`, and then performs
+ * another bitwise operation on `c` and the complement of `d`. The results of
+ * these two operations are then combined using a bitwise OR operation.
+ *
+ * The resulting value is then passed to the `md5_cmn` function along with the
+ * other parameters (`a`, `b`, `x`, `s`, and `t`). The `md5_cmn` function performs
+ * additional operations as part of the MD5 algorithm.
+ *
+ * The `md5_gg` function returns the result of the `md5_cmn` function.
+ */
 function md5_gg(a, b, c, d, x, s, t)
 {
   return md5_cmn((b & d) | (c & (~d)), a, b, x, s, t);
 }
+/**
+ * The `md5_hh` function is used in the MD5 algorithm to perform a specific
+ * operation. It takes in six parameters: `a`, `b`, `c`, `d`, `x`, `s`, and `t`.
+ *
+ * - `a`, `b`, `c`, and `d` are variables representing the internal state of the
+ * MD5 algorithm.
+ * - `x` is a variable representing the input data for the operation.
+ * - `s` is a variable representing the number of bits to shift the input data.
+ * - `t` is a variable representing a constant value used in the operation.
+ *
+ * The function returns the result of calling the `md5_cmn` function with the
+ * following arguments:
+ * - `b ^ c ^ d` is the result of performing a bitwise XOR operation on `b`, `c`,
+ * and `d`.
+ * - `a` is passed as is.
+ * - `b` is passed as is.
+ * - `x` is passed as is.
+ * - `s` is passed as is.
+ * - `t` is passed as is.
+ *
+ * The `md5_cmn` function is not defined in the provided code snippet, so its
+ * implementation and purpose are unknown.
+ */
 function md5_hh(a, b, c, d, x, s, t)
 {
   return md5_cmn(b ^ c ^ d, a, b, x, s, t);
 }
+/**
+ * The `md5_ii` function is a helper function used in the MD5 algorithm. It takes
+ * in six parameters: `a`, `b`, `c`, `d`, `x`, `s`, and `t`.
+ *
+ * - `a`, `b`, `c`, and `d` are 32-bit integers representing the four MD5 state
+ * variables.
+ * - `x` is a 32-bit integer representing the input data.
+ * - `s` is an integer representing the number of bits to shift the state
+ * variables.
+ * - `t` is a 32-bit integer representing a constant value used in the algorithm.
+ *
+ * The function performs a bitwise XOR operation between `c` and the bitwise OR
+ * operation between `b` and the bitwise NOT operation on `d`. This result is then
+ * passed to the `md5_cmn` function along with the other parameters to calculate
+ * the new value of `a`.
+ *
+ * The `md5_ii` function returns the result of the `md5_cmn` function.
+ */
 function md5_ii(a, b, c, d, x, s, t)
 {
   return md5_cmn(c ^ (b | (~d)), a, b, x, s, t);

@@ -1,4 +1,4 @@
-<?
+<?php
 include("core-config.php");
 
 if (!$PRIVILEGI["stats"]) redirect_to("home.php");
@@ -9,9 +9,9 @@ if (!$_SESSION["dal_stat"]){
 }
 
 ?>
-<? head_page() ?>
-<? top_menu() ?>
-<?
+<?php head_page() ?>
+<?php top_menu() ?>
+<?php
 
 
 if ($_REQUEST["invia"]){
@@ -28,9 +28,9 @@ if ($_REQUEST["invia"]){
 				<form name="sss" method='POST' action='<?= $_SERVER["PHP_SELF"] ?>'>
 				<tr bgcolor='#ffffff'>
 					<td>Dal</td>
-					<td><? disegna_cal("d_g","d_m", "d_a", unixtojd($_SESSION["dal_stat"])) ?></td>
+					<td><?php disegna_cal("d_g","d_m", "d_a", unixtojd($_SESSION["dal_stat"])) ?></td>
 					<td>Al</td>
-					<td><? disegna_cal("a_g","a_m", "a_a", unixtojd($_SESSION["al_stat"])) ?></td>
+					<td><?php disegna_cal("a_g","a_m", "a_a", unixtojd($_SESSION["al_stat"])) ?></td>
 					<td rowspan="4"><input type='submit' name='invia' value='Calcola' style="border:1px solid #000000; background-color:#ffffff"></td>
 				</tr>
 				<tr bgcolor='#ffffff'>
@@ -38,9 +38,9 @@ if ($_REQUEST["invia"]){
                     <td colspan="3">
                     	<select name="tipocamera">
                     		<option value="0">Tutte</option>
-                    		<?php for ($i = 65; $i<72; $i++) { ?>
-                    			<option <?php echo chr($i)==$_REQUEST["tipocamera"]?"selected":"" ?> value="<?php echo chr($i)?>"><?php echo chr($i)?></option>
-                    		<?php } ?>
+                    		<?phpphp for ($i = 65; $i<72; $i++) { ?>
+                    			<option <?phpphp echo chr($i)==$_REQUEST["tipocamera"]?"selected":"" ?> value="<?phpphp echo chr($i)?>"><?phpphp echo chr($i)?></option>
+                    		<?phpphp } ?>
                     	</select>
                     </td>
 				</tr>
@@ -50,7 +50,7 @@ if ($_REQUEST["invia"]){
 				</tr>
 				<tr bgcolor='#ffffff'>
                     <td colspan="2">
-                        <?
+                        <?php
                         	$res=multi_query($dbh, "SELECT * FROM utenti WHERE eliminato=0");
                         	for($i=0;$i<multi_num_rows($res);$i++){
                         		$data=multi_fetch_array($res, $i);
@@ -76,7 +76,7 @@ if ($_REQUEST["invia"]){
                             sta=false;
                         }
 
-                        <?
+                        <?php
                         for($i=0;$i<multi_num_rows($res);$i++){
                         	$data=multi_fetch_array($res, $i);
                         	echo "document.forms['sss'].elements['utenti[".$data["id"]."]'].checked=sta;";
@@ -85,7 +85,7 @@ if ($_REQUEST["invia"]){
                     }
 				</script>
 			</table>
-<?
+<?php
 
 	if ($_SESSION["dal_stat"]>0 & $_SESSION["al_stat"]>0 & $_SESSION["dal_stat"]<$_SESSION["al_stat"]){
 
@@ -113,7 +113,7 @@ if ($_REQUEST["invia"]){
 					<td align="right"><b>Prezzo</b></td>
 					<td><b>Stato</b></td>
 				</tr>
-				<?
+				<?php
 					$q="
                     SELECT
                         ordini.*,utenti.utente,utenti.id as idutente,
@@ -156,7 +156,7 @@ if ($_REQUEST["invia"]){
 					<td align="right"><?= show_prezzo($data["prz"]) ?> &euro;</td>
 					<td><?= $GlobStati[$data["stato"]] ?></td>
 				</tr>
-				<? } ?>
+				<?php } ?>
 				<tr bgcolor='#ffffff' style="font-weight:bold">
                     <td align="right" colspan="4">Totale:</td>
 					<td><?= $qtot ?></td>
@@ -164,7 +164,7 @@ if ($_REQUEST["invia"]){
 					<td>&nbsp;</td>
 				</tr>
 			</table>
-<? } ?>
+<?php } ?>
 
 </body>
 

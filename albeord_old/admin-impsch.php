@@ -1,4 +1,4 @@
-<?
+<?php
 if (!$PRIVILEGI["admin"]) redirect_to("home.php");
 include_once("lib/tar.class.php");
 
@@ -28,7 +28,7 @@ function importFile($content){
 	}
 }
 function importTar($fname, $anno = 0){
-	
+
 	$parts = explode("_", basename($fname));
 	// d-m-Y_H-i-s
 	$partsData = explode("-", $parts[0]);
@@ -44,21 +44,21 @@ function importTar($fname, $anno = 0){
 							if(!importFile($information["file"]) ){
 								echo "<center style='color:red'>Errore importazione file  ".basename($information["name"])." </center>";
 							}else{
-								echo "<center style='color:green'>Importato  ".basename($information["name"])." </center>";	
+								echo "<center style='color:green'>Importato  ".basename($information["name"])." </center>";
 							}
 						}
 					}
 				} else {
 					echo "<center style='color:gray'>File vuoto</center>";
 				}
-	
+
 			 }else{
 				echo "<center style='color:red'>Errore apertura file tar</center>";
 			}
 		}else{
 			echo "<center style='color:red'>Errore apertura file</center>";
 		}
-	}	
+	}
 }
 if($_REQUEST["imp"]){
 	if($_FILES["file"] && $_FILES["file"]["size"]>0 && $_FILES["file"]["error"]==0){
@@ -72,7 +72,7 @@ if($_REQUEST["imp_drive"]){
 	//$percorso  = trovaUsb();
 	$percorso = "C:\Schede Esportate Albeord";
 	foreach (glob("$percorso/*.tgz") as $fname){
-		echo "<center style='color:#638159'>Tar: $fname </center>";	
+		echo "<center style='color:#638159'>Tar: $fname </center>";
 		importTar($fname, intval($_REQUEST["anno"]));
 	}
 }
@@ -82,40 +82,40 @@ if($_REQUEST["imp_drive"]){
 <table cellspacing='0' cellpadding='3' width='550'>
 	<tr>
         <td bgcolor='#cccccc' nowrap colspan="3">Importazione</td>
-        
+
 	</tr>
 	<tr>
 		<td>File esportato</td>
         <td><input type="file" name="file"  /></td>
-      
+
 		<td><input type='submit' name='imp' value='  Importa  ' class="inpbtn"></td>
 	</tr>
-	<?php
+	<?phpphp
 	//$percorso  = trovaUsb();
 	$percorso = "C:\Schede Esportate Albeord";
-	if($percorso ) { 
+	if($percorso ) {
 		?>
 		<tr>
-	        <td bgcolor='#cccccc' nowrap colspan="3">Trovato drive di backup in <b><?php echo $percorso; ?></b></td>
+	        <td bgcolor='#cccccc' nowrap colspan="3">Trovato drive di backup in <b><?phpphp echo $percorso; ?></b></td>
 		</tr>
-		
+
 		<tr>
 			  <td>
-		        
-		       
+
+
 	        </td>
 			<td colspan="3">
 			Anno:
 				<select name="anno">
-		        	<?php  foreach (range( date("Y"),2008) as $annoSel) {?>
-		        	<option value="<?php  echo $annoSel?>"><?php  echo $annoSel?></option>
-		        	 <?php } ?>
+		        	<?phpphp  foreach (range( date("Y"),2008) as $annoSel) {?>
+		        	<option value="<?phpphp  echo $annoSel?>"><?phpphp  echo $annoSel?></option>
+		        	 <?phpphp } ?>
 		        	 <option value="0">Tutto</option>
 		        </select>
 				<input type='submit' name='imp_drive' value='  Importa automaticamente  ' class="inpbtn">
-				
+
 			</td>
 		</tr>
-	<?php } ?>
+	<?phpphp } ?>
 </table>
 </form>

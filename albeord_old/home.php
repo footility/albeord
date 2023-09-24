@@ -1,4 +1,4 @@
-<?
+<?php
 include("core-config.php");
 
 head_page();
@@ -8,17 +8,17 @@ top_menu();
 	if ($PathS{strlen($PathS)-1}!="\\") $PathS.="\\";
 ?>
 	<script language="Javascript" type="text/javascript">
-		if (!window.ActiveXObject) alert ("Controlli ActiveX non supportati dal browser, non sarà possibile stampare da questo computer.");
+		if (!window.ActiveXObject) alert ("Controlli ActiveX non supportati dal browser, non sarï¿½ possibile stampare da questo computer.");
 	</script>
 	<script language="VBScript" type="text/vbscript">
 		On Error Resume Next
-		Set WshShell = CreateObject("WScript.Shell")		
-		Dim Errori			
+		Set WshShell = CreateObject("WScript.Shell")
+		Dim Errori
 		If Err <> 0 Then
 		  Errori = Errori & "Il browser in uso ha delle restrizioni sui controlli ActiveX, le funzioni di stampa potrebbero non funzionare."& chr(13)
-		End if	
-		
-				
+		End if
+
+
 		Function FileExists(Fname)
 		  Set fs = CreateObject("Scripting.FileSystemObject")
 		  if fs.FileExists(Fname) = False then
@@ -28,18 +28,18 @@ top_menu();
 		  end if
 		Set fs = Nothing
 		End Function
-		
-		If FileExists("<?= $PathS.'php.exe' ?>") = -1 Then 
+
+		If FileExists("<?= $PathS.'php.exe' ?>") = -1 Then
 			Errori = Errori & "Programma di stampa non installato o percorso errato."
 		End If
-		
+
 		If Errori <> "" Then
 			MsgBox Errori , vbExclamation, "Albeord"
-		End If	
+		End If
 
 
-		
-			
+
+
 	</script>
 
 <br>

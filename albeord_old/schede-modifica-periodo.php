@@ -1,5 +1,5 @@
-<?
-	if(!$NUOVO){ 
+<?php
+	if(!$NUOVO){
 		$Presenze=$ScontiBambini=$Supplementi=array();
 		$res=multi_query($dbh, "SELECT * FROM schede_prezzi_bambini WHERE idperiodo=".$data["id"] );
 		for ($i=0; $i<multi_num_rows($res); $i++){
@@ -7,7 +7,7 @@
 			$ScontiBambini[$dataT["bambino"]]=$dataT["sconto"];
 		}
 		$res=multi_query($dbh, "SELECT * FROM schede_presenze WHERE idperiodo=".$data["id"] );
-		
+
 		for ($i=0; $i<multi_num_rows($res); $i++){
 			$dataT=multi_fetch_array($res, $i);
 			$Presenze[$dataT["giorno"]][$dataT["idtrattamento"]][$dataT["tipo"]][$dataT["persona"]]=1;
@@ -19,22 +19,22 @@
 		}
 	}
 ?>
-<form action="schede-modifica.php" id="forminvio" method="post"  onsubmit="return checkForm(this)">	
+<form action="schede-modifica.php" id="forminvio" method="post"  onsubmit="return checkForm(this)">
 	<input  type="hidden" name="idscheda" value="<?=  $IDS ?>" />
 	<input  type="hidden" name="id" value="<?=  $data["id"] ?>" />
 	<input  type="hidden" name="camera" value="<?=  $scheda["camera"] ?>" />
 	<table border='0' cellspacing='0' cellpadding='3' align='center' width='100%' bgcolor='#ffffff' style='border:1px solid #888888'>
 		<tr>
 			<td bgcolor='#cccccc'  colspan="2" style='border:1px solid #ffffff'><b>Periodo</b></td>
-		</tr>	
+		</tr>
 		<tr>
 			<td bgcolor='#ffffff'  width="50%"><b>Dal</b></td>
 			<td bgcolor='#ffffff' width="50%"><b>Al</b></td>
 		</tr>
 		<tr bgcolor='#ffffff'>
-			<td><? disegna_cal("d_g","d_m", "d_a", unixtojd($data["dal"])) ?></td>
-			<td nowrap="nowrap"><? disegna_cal("a_g","a_m", "a_a", unixtojd($data["al"])) ?></td>
-		</tr>	
+			<td><?php disegna_cal("d_g","d_m", "d_a", unixtojd($data["dal"])) ?></td>
+			<td nowrap="nowrap"><?php disegna_cal("a_g","a_m", "a_a", unixtojd($data["al"])) ?></td>
+		</tr>
 
 		<tr>
 			<td bgcolor='#ffffff' ><strong>Adulti</strong></td>
@@ -81,19 +81,19 @@
 						</td>
 						<td valign="top">
 							<table>
-								<? for ($i=1; $i<=$data["bambini"]; $i++){ ?>
+								<?php for ($i=1; $i<=$data["bambini"]; $i++){ ?>
 								<tr>
 									<td>Bambino <?= $i?>:</td>
 									<td><input type="text" autocomplete="off"  name="sconto[<?= $i ?>]" size="3" class="inptext" value="<?=  show_prezzo($ScontiBambini[$i],_PRECENT_) ?>" /> %</td>
 								</tr>
-								<? } ?>
+								<?php } ?>
 							</table>
 						</td>
 					</tr>
 				</table>
-				
-				
-				
+
+
+
 			</td>
 			<td bgcolor='#ffffff' width='50%' style='border:1px solid #ffffff;; visibility:<?= ($data["tipo"]!="F"?"hidden":"visible") ?>' id="tipo_f_td<?=  $data["id"] ?>">
 				<table>
@@ -110,134 +110,134 @@
 						<td><input type="text" name="ffb"  autocomplete="off" size="5" class="inptext" value="<?=  show_prezzo($data["ffb"]) ?>" /> &euro;</td>
 					</tr>
 				</table>
-	
+
 			</td>
 		</tr>
 
-		<? if(!$NUOVO){ ?>
+		<?php if(!$NUOVO){ ?>
 		<tr bgcolor='#ffffff'>
 			<td colspan="2">
 				<table cellpadding="3" cellspacing="1" width="80%">
-	
-				<? 
+
+				<?php
 				//$Presenze[$dataT["giorno"]][$dataT["idtrattamento"]][$dataT["tipo"]][$dataT["persona"]]
 				for ($i=unixtojd($data["dal"]); $i<=unixtojd($data["al"]); $i++){ ?>
 					<tr>
 						<td valign="top" style='border-bottom:1px solid #cccccc'><?= jdtodate("d-m-Y", $i)?></td>
-						<? foreach ($Trattamenti as $idt => $trattamento){ ?>
-							<?
+						<?php foreach ($Trattamenti as $idt => $trattamento){ ?>
+							<?php
 							 if($i==unixtojd($data["dal"]) && $idt==$TrattamentiFirst){
 								echo "<td style='border-bottom:1px solid #cccccc'>&nbsp;</td>";
 								continue;
 							 }
 							?>
-							<td style='border-bottom:1px solid #cccccc' valign="top" <? 
+							<td style='border-bottom:1px solid #cccccc' valign="top" <?php
 							if(
 							(count($Presenze[$i][$idt]["A"]) || count($Presenze[$i][$idt]["B"])) &&  /*$TrattamentiBaseAbiltati[$idt] && */
 							(count($Presenze[$i][$idt]["A"])!=$data["adulti"] || count($Presenze[$i][$idt]["B"])!=$data["bambini"])){
 								echo "bgcolor='#dddddd'";
 							}
 							?>>
-								<input type="checkbox"  
-								<? if($i !=unixtojd($data["dal"]) && $idt!=$TrattamentiFirst && !count($Presenze[$i][$TrattamentiFirst]["A"]) && !count($Presenze[$i][$TrattamentiFirst]["B"])  ){ ?>
+								<input type="checkbox"
+								<?php if($i !=unixtojd($data["dal"]) && $idt!=$TrattamentiFirst && !count($Presenze[$i][$TrattamentiFirst]["A"]) && !count($Presenze[$i][$TrattamentiFirst]["B"])  ){ ?>
 										disabled="disabled"
-								<? } ?>
-								onclick="<?
-							
+								<?php } ?>
+								onclick="<?php
+
 								if($idt==$TrattamentiFirst){
-									?>autocheckDisable(this, <?= $i ?>, <?= $idt ?>, <?=  $data["id"] ?>, <?=  $data["adulti"]  ?>,<?=  $data["bambini"]  ?>, [<?= implode(",",array_keys($Trattamenti)) ?>])<?
+									?>autocheckDisable(this, <?= $i ?>, <?= $idt ?>, <?=  $data["id"] ?>, <?=  $data["adulti"]  ?>,<?=  $data["bambini"]  ?>, [<?= implode(",",array_keys($Trattamenti)) ?>])<?php
 								}else{
-									?>autocheck(this,'id_<?= $i ?>_<?= $idt ?>_<?=  $data["id"] ?>', <?=  $data["adulti"]  ?>,<?=  $data["bambini"]  ?>)<?
+									?>autocheck(this,'id_<?= $i ?>_<?= $idt ?>_<?=  $data["id"] ?>', <?=  $data["adulti"]  ?>,<?=  $data["bambini"]  ?>)<?php
 								}?>"
 								id="id_<?= $i ?>_<?= $idt ?>_<?=  $data["id"] ?>"
 								<?= (count($Presenze[$i][$idt]["A"]) || count($Presenze[$i][$idt]["B"]))?"checked":"" ?>
 								 /> <span style="cursor:pointer;" onclick="toggle('div_id_<?= $i ?>_<?= $idt ?>_<?=  $data["id"] ?>')">+</span><br />
 								<div id="div_id_<?= $i ?>_<?= $idt ?>_<?=  $data["id"] ?>" style="display:none">
-								<? for ($j=1; $j<=$data["adulti"]; $j++){ ?>
-									
-									&nbsp;<input type="checkbox" name="presenze[<?= $i ?>][<?= $idt ?>][A][<?= $j ?>]" 
-									<? if($i!=unixtojd($data["dal"]) && $idt!=$TrattamentiFirst && !$Presenze[$i][$TrattamentiFirst]["A"][$j]){ ?>
+								<?php for ($j=1; $j<=$data["adulti"]; $j++){ ?>
+
+									&nbsp;<input type="checkbox" name="presenze[<?= $i ?>][<?= $idt ?>][A][<?= $j ?>]"
+									<?php if($i!=unixtojd($data["dal"]) && $idt!=$TrattamentiFirst && !$Presenze[$i][$TrattamentiFirst]["A"][$j]){ ?>
 										disabled="disabled"
-									<? } ?>
-									onclick="<?
-									
+									<?php } ?>
+									onclick="<?php
+
 									if($idt==$TrattamentiFirst){
-										?>autocheckDisableLow(this, <?= $i ?>, <?= $idt ?>, <?=  $data["id"] ?>, 'A',<?=  $j ?>, [<?= implode(",",array_keys($Trattamenti)) ?>])<?
+										?>autocheckDisableLow(this, <?= $i ?>, <?= $idt ?>, <?=  $data["id"] ?>, 'A',<?=  $j ?>, [<?= implode(",",array_keys($Trattamenti)) ?>])<?php
 									}?>"
 									<?= ($Presenze[$i][$idt]["A"][$j])?"checked":"" ?>
 									id="id_<?= $i ?>_<?= $idt ?>_<?=  $data["id"] ?>_A_<?= $j ?>"/><label for="id_<?= $i ?>_<?= $idt ?>_A_<?= $j ?>"> A <?= $j ?></label><br />
-								<? } ?>
-								<? for ($j=1; $j<=$data["bambini"]; $j++){ ?>
-									&nbsp;<input type="checkbox"  name="presenze[<?= $i ?>][<?= $idt ?>][B][<?= $j ?>]"  
-									<? if($i!=unixtojd($data["dal"]) && $idt!=$TrattamentiFirst && !$Presenze[$i][$TrattamentiFirst]["B"][$j]){ ?>
+								<?php } ?>
+								<?php for ($j=1; $j<=$data["bambini"]; $j++){ ?>
+									&nbsp;<input type="checkbox"  name="presenze[<?= $i ?>][<?= $idt ?>][B][<?= $j ?>]"
+									<?php if($i!=unixtojd($data["dal"]) && $idt!=$TrattamentiFirst && !$Presenze[$i][$TrattamentiFirst]["B"][$j]){ ?>
 										disabled="disabled"
-									<? } ?>
-									onclick="<?
-									
+									<?php } ?>
+									onclick="<?php
+
 									if($idt==$TrattamentiFirst){
-										?>autocheckDisableLow(this, <?= $i ?>, <?= $idt ?>, <?=  $data["id"] ?>,'B',<?=  $j  ?>, [<?= implode(",",array_keys($Trattamenti)) ?>])<?
+										?>autocheckDisableLow(this, <?= $i ?>, <?= $idt ?>, <?=  $data["id"] ?>,'B',<?=  $j  ?>, [<?= implode(",",array_keys($Trattamenti)) ?>])<?php
 									}?>"
 									<?= ($Presenze[$i][$idt]["B"][$j])?"checked":"" ?>
 									id="id_<?= $i ?>_<?= $idt ?>_<?=  $data["id"] ?>_B_<?= $j ?>"/><label for="id_<?= $i ?>_<?= $idt ?>_B_<?= $j ?>"> B <?= $j ?></label><br />
-								<? } ?>
+								<?php } ?>
 								</div>
 							</td>
-							<?
+							<?php
 							 if($i==unixtojd($data["al"])){
 								echo "<td style='border-bottom:1px solid #cccccc' colspan='".(count($Trattamenti)-1)."'>&nbsp;</td>";
 								break;
 							 }
-							
+
 							 ?>
-						<? } ?>
+						<?php } ?>
 						<td>
-							 <? if($i<unixtojd($data["al"])){ ?>
+							 <?php if($i<unixtojd($data["al"])){ ?>
 							<input class="inptext" type="text" style="text-align:right" name="supplemento[<?= $i ?>]" size="6" value="<?= $Supplementi[$i]?show_prezzo($Supplementi[$i]):"" ?>" autocomplete="off" /> &euro;
-							<? } ?>
+							<?php } ?>
 						</td>
 					</tr>
-				<? } ?>
+				<?php } ?>
 				</table>
 			 </td>
-		</tr>	
-		<? }?>
-		
-		
-		
+		</tr>
+		<?php }?>
+
+
+
 			<tr bgcolor='#cccccc'>
 				<td bgcolor='#ffffff'  >
-					
-					<? if ($NUOVO){ ?>
+
+					<?php if ($NUOVO){ ?>
 					<input style="width:10em"  type="submit" value="Aggiungi" name="aggiungi" class="inpbtn" />
-					<? }else{ ?>
+					<?php }else{ ?>
 					<input style="width:10em"  type="submit" name="salva_periodo" value="Salva" class="inpbtn" />
-					<? }?>
+					<?php }?>
 				</td>
 				<td bgcolor='#ffffff' align="right">
-					
-					<? if (!$NUOVO){ ?>
+
+					<?php if (!$NUOVO){ ?>
 						<input style="width:10em"  type="submit" name="elimina" value="Elimina" class="inpbtn" />
-					<? }?>
+					<?php }?>
 				</td>
 			</tr>
 
-		
+
 	</table>
 </form>
-<?
+<?php
 if(!$NUOVO){
 
 	$schdede_LAST["bb"]=$data["bb"];
 	$schdede_LAST["hb"]=$data["hb"];
 	$schdede_LAST["fb"]=$data["fb"];
-		
+
 	$schdede_LAST["fbb"]=$data["fbb"];
 	$schdede_LAST["fhb"]=$data["fhb"];
 	$schdede_LAST["ffb"]=$data["ffb"];
-	
+
 	$schdede_LAST["dal"]=$data["al"];
 	$schdede_LAST["al"]=strtotime("+7days",$data["al"]);
-	
+
 	$schdede_LAST["tipo"]=$data["tipo"];
 }
 ?>

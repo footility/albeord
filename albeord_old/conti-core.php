@@ -1,4 +1,4 @@
-<?
+<?php
 include("core-config.php");
 
 if (!$PRIVILEGI["conti"]) redirect_to("home.php");
@@ -8,7 +8,7 @@ head_page();
 top_menu();
 ?>
 <br>
-	<?
+	<?php
 		$artcol = 9;
 		$fw     = 980;
 

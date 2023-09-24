@@ -1,4 +1,4 @@
-<?
+<?php
 
 function jdtodate($cosa, $jd){
 	$unix = jdtounix($jd);
@@ -26,17 +26,17 @@ function disegna_cal($g, $m, $a, $time=0){
 	?>
 	<select name="<?= $g ?>">
 		<option value="0">Giorno</option>
-		<? for ($d=1; $d<32;$d++) echo "<option value=\"$d\" ".(($d==$g_sel)?"selected":"").">$d</option>\n";	?>
+		<?php for ($d=1; $d<32;$d++) echo "<option value=\"$d\" ".(($d==$g_sel)?"selected":"").">$d</option>\n";	?>
 	</select>
 	<select name="<?= $m ?>">
 		<option value="0">Mese</option>
-		<? for ($d=1; $d<=12;$d++) echo "<option value=\"$d\" ".(($d==$m_sel)?"selected":"").">".$MesiTradotti[$d]."</option>\n";?>
+		<?php for ($d=1; $d<=12;$d++) echo "<option value=\"$d\" ".(($d==$m_sel)?"selected":"").">".$MesiTradotti[$d]."</option>\n";?>
 	</select>
 	<select name="<?= $a ?>">
 		<option value="0">Anno</option>
-		<? for ($d=date("Y")-2; $d<date("Y")+3;$d++) echo "<option value=\"$d\" ".(($d==$a_sel)?"selected":"").">$d</option>\n";?>
+		<?php for ($d=date("Y")-2; $d<date("Y")+3;$d++) echo "<option value=\"$d\" ".(($d==$a_sel)?"selected":"").">$d</option>\n";?>
 	</select>
-	<?
+	<?php
 }
 function insert_prezzo($prezzo){
 	$prezzo=str_replace(',', '.', $prezzo);
@@ -102,8 +102,8 @@ function stampawbs($dbh, $IDORD, $TIPO){
 
 	$PathS  = multi_single_query($dbh, "SELECT pathstampa FROM utenti WHERE id=".intval($_COOKIE["albeordlogged"]));
 	$Stamp  = multi_single_query($dbh, "SELECT stampante FROM utenti WHERE id=".intval($_COOKIE["albeordlogged"]));
-	
-	
+
+
 	if ($PathS{strlen($PathS)-1}!="\\") $PathS.="\\";
 
 	$dir    = "http://".$_SERVER["HTTP_HOST"].dirname($_SERVER["PHP_SELF"])."/stampe/send_stampa.php";
@@ -139,19 +139,19 @@ function top_menu(){
 ?>
 <table style="cursor:pointer" class="topmenu" width='980' border='0' cellspacing='1' cellpadding='3' bgcolor='#000000' align='center'>
 	<tr bgcolor='#ffffff'>
-		<?
+		<?php
 		foreach($GlobPrivilegi as $key => $val){
 			if ($PRIVILEGI[$key]){
-				?><td width='<?= $w ?>' onClick="location.href='<?= $key ?>-core.php'" align='center' <?= (strstr(basename($_SERVER["PHP_SELF"]), "$key-"))?"bgcolor='#cccccc'":" onmouseout=\"this.style.backgroundColor='#ffffff'\" onmouseover=\"this.style.backgroundColor='#cccccc'\" " ?>> <?= $val ?></td><?
+				?><td width='<?= $w ?>' onClick="location.href='<?= $key ?>-core.php'" align='center' <?= (strstr(basename($_SERVER["PHP_SELF"]), "$key-"))?"bgcolor='#cccccc'":" onmouseout=\"this.style.backgroundColor='#ffffff'\" onmouseover=\"this.style.backgroundColor='#cccccc'\" " ?>> <?= $val ?></td><?php
 			}
 		}
 		?>
 		<td bgcolor='#EBD1CE' width='<?= $logoutw ?>' onClick="if (confirm('Continuare?'))location.href='index.php?logout=1'" align='center'>Logout</td>
 	</tr>
 </table>
-<?
+<?php
 if (strstr($_SERVER['HTTP_USER_AGENT'],"MSIE")===false){
-	?><center style="color:#7C0C0C">Albeord &egrave; in grado di stampare unicamente con Internet Explorer 6.0 o superiore</center><?
+	?><center style="color:#7C0C0C">Albeord &egrave; in grado di stampare unicamente con Internet Explorer 6.0 o superiore</center><?php
 }
 }
 function redirect_to($URL){
@@ -171,7 +171,7 @@ function head_page(){
 	<title>Albeord Mercurio Sistemi</title>
 	</head>
 	<body topmargin='8' leftmargin='0' vlink="#0000ff">
-	<?
+	<?php
 }
 // parte utile al calcolo del prezzzo sul preventivo
 function getPrezzoGiornaliero($trattamento, $tipo, $prezzi,$prezzif, $ScontiBambini,$periodo){
@@ -179,7 +179,7 @@ function getPrezzoGiornaliero($trattamento, $tipo, $prezzi,$prezzif, $ScontiBamb
 	if($periodo["tipo"]=="F"){
 		$p=$prezzif[$trattamento];
 	}else{
-	
+
 		$p=0;
 		for ($i=0; $i<strlen($tipo); $i++){
 			if($tipo[$i]=="B"){
@@ -189,14 +189,14 @@ function getPrezzoGiornaliero($trattamento, $tipo, $prezzi,$prezzif, $ScontiBamb
 			}
 		}
 	}
-	
+
 	return $p;
 }
 
 function getPrezziScheda($dbh, $ID){
 	global $Servizi;
 	$scheda  = multi_single_query($dbh, "SELECT * FROM schede where id= $ID","ALL");
-	
+
 	if(!$Servizi){
 		$res=multi_query($dbh, "SELECT * FROM servizi ORDER BY tipo,nome ASC" );
 		for ($i=0; $i<multi_num_rows($res); $i++){
@@ -205,9 +205,9 @@ function getPrezziScheda($dbh, $ID){
 		}
 	}
 	$ret["trattamenti"]=array();
-	
-	$resP=mysql_query("SELECT * FROM schede_periodi WHERE idscheda =  $ID order by  dal" );
-	while($periodo=mysql_fetch_assoc($resP)){
+
+	$resP=mysqli_query("SELECT * FROM schede_periodi WHERE idscheda =  $ID order by  dal" );
+	while($periodo=mysqli_fetch_assoc($resP)){
 		// normale
 		$prezzi[1]=$periodo["bb"];
 		$prezzi[2]=$periodo["hb"];
@@ -216,19 +216,19 @@ function getPrezziScheda($dbh, $ID){
 		$prezzif[1]=$periodo["fbb"];
 		$prezzif[2]=$periodo["fhb"];
 		$prezzif[3]=$periodo["ffb"];
-	
+
 		$res=multi_query($dbh, "SELECT * FROM schede_prezzi_bambini WHERE idperiodo=".$periodo["id"]."" );
 		for ($i=0; $i<multi_num_rows($res); $i++){
 			$dataT=multi_fetch_array($res, $i);
 			$ScontiBambini[$dataT["bambino"]]=$dataT["sconto"];
 		}
-		
-		
+
+
 		$res=multi_query($dbh, "select giorno from schede_presenze WHERE idperiodo=".$periodo["id"]." group by giorno order by giorno");
 		$pasti=array();
 		$pasti2=array();
-		while($data=mysql_fetch_assoc($res)){	
-		
+		while($data=mysqli_fetch_assoc($res)){
+
 			if($data["giorno"]==unixtojd($periodo["dal"])){
 				continue;
 			}elseif($data["giorno"]==unixtojd($periodo["al"])){
@@ -236,11 +236,11 @@ function getPrezziScheda($dbh, $ID){
 			}else{
 				$q="giorno=".$data["giorno"];
 			}
-			
+
 			$query2="select tipo, persona, count(*) as c from schede_presenze WHERE idperiodo=".$periodo["id"]." AND $q GROUP  BY tipo, persona";
 
-			$res2=mysql_query($query2);
-			while($data2=mysql_fetch_assoc($res2)){
+			$res2=mysqli_query($query2);
+			while($data2=mysqli_fetch_assoc($res2)){
 				$tipo=$data2["tipo"];
 				if($data2["tipo"]=="B"){
 					$tipo.=$data2["persona"];
@@ -248,16 +248,16 @@ function getPrezziScheda($dbh, $ID){
 				$pasti[$data2["c"]][$data["giorno"]].=$tipo;
 			}
 		}
-	
-		
-	
+
+
+
 		foreach ($pasti as $key => $val){
 			foreach ($val as $g => $t){
-				$pasti2[$key][$t]++;	
+				$pasti2[$key][$t]++;
 			}
 		}
 		ksort($pasti2);
-	
+
 		foreach ($pasti2 as $trattamento => $quantita){
 			  foreach ($quantita as $tipo=> $giorni){
 					$prezzo=getPrezzoGiornaliero($trattamento,$tipo,$prezzi,$prezzif, $ScontiBambini,$periodo);
@@ -265,20 +265,20 @@ function getPrezziScheda($dbh, $ID){
 					$tot+=$subtot;
 					$ret["trattamenti"][$trattamento][]=array(
 						"persone"=>strlen(str_replace(range(0,9),"",$tipo)),
-						"giorni"=>$giorni, 
+						"giorni"=>$giorni,
 						"parziale"=>$prezzo,
 						"totale"=>$subtot);
-			  } 
+			  }
 		}
 		$res=multi_query($dbh, "SELECT supplemento FROM schede_supplementi WHERE idperiodo=".$periodo["id"]."" );
 		for ($i=0; $i<multi_num_rows($res); $i++){
 			$dataT=multi_fetch_array($res, $i);
 			$ret["supplementi"][$periodo["id"]]+=$dataT["supplemento"];
 		}
-	
+
 	}
 
-	
+
 	// calcolo prezzo servizi
 	$res     = multi_query($dbh, "SELECT * FROM schede_servizi WHERE idscheda=$ID" );
 	for ($i=0; $i<multi_num_rows($res); $i++){

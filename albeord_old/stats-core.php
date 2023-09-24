@@ -1,4 +1,4 @@
-<?
+<?php
 include("core-config.php");
 
 if (!$PRIVILEGI["stats"]) redirect_to("home.php");
@@ -8,20 +8,20 @@ if (!$_SESSION["dal_stat"]){
 	$_SESSION["al_stat"]  = mktime(23,59,59, date("m"), date("d"),date("Y"));
 }
 ?>
-<? head_page() ?>
-<? top_menu() ?>
+<?php head_page() ?>
+<?php top_menu() ?>
 
-<?
+<?php
 
 
 if (strlen($_REQUEST["stampa_simp"])>0 | strlen($_REQUEST["stampa_dett"])>0){
-    
+
     $data = $_SESSION["dal_stat"]."*".$_SESSION["al_stat"];
-    
+
     if(strlen($_REQUEST["stampa_simp"])>0) stampawbs($dbh, $data , 5);
 
     if(strlen($_REQUEST["stampa_dett"])>0) stampawbs($dbh, $data , 6);
-    
+
 }
 
 if ($_REQUEST["invia"]){
@@ -36,14 +36,14 @@ if ($_REQUEST["invia"]){
 				<form method='POST' action='<?= $_SERVER["PHP_SELF"] ?>'>
 				<tr bgcolor='#ffffff'>
 					<td>Dal</td>
-					<td><? disegna_cal("d_g","d_m", "d_a", unixtojd($_SESSION["dal_stat"])) ?></td>
+					<td><?php disegna_cal("d_g","d_m", "d_a", unixtojd($_SESSION["dal_stat"])) ?></td>
 					<td>Al</td>
-					<td><? disegna_cal("a_g","a_m", "a_a", unixtojd($_SESSION["al_stat"])) ?></td>
+					<td><?php disegna_cal("a_g","a_m", "a_a", unixtojd($_SESSION["al_stat"])) ?></td>
 					<td><input type='submit' name='invia' value='Calcola' style="border:1px solid #000000; background-color:#ffffff"></td>
 				</tr>
 				</form>
 			</table>
-<?
+<?php
 
 	if ($_SESSION["dal_stat"]>0 & $_SESSION["al_stat"]>0 & $_SESSION["dal_stat"]<$_SESSION["al_stat"]){
 
@@ -68,7 +68,7 @@ if ($_REQUEST["invia"]){
 					<td><b>Articoli</b></td>
 					<td><b>Valore</b></td>
 				</tr>
-				<?
+				<?php
 					$TipiOrd[1]="Incassi";
 					$TipiOrd[2]="Storni";
 					//$TipiOrd[3]="Da Pagare";
@@ -77,7 +77,7 @@ if ($_REQUEST["invia"]){
 					if ($tp==2)  $addq=" ordini.stato=2 ";
 				?>
 					<tr><td bgcolor='#ffffff' colspan='4'><b><?= $txtord ?></b></td></tr>
-					<?
+					<?php
 						$res=multi_query($dbh, "SELECT * FROM gruppi order by nome");
 
 						for($i=0; $i<multi_num_rows($res); $i++){
@@ -88,7 +88,7 @@ if ($_REQUEST["invia"]){
 						<td><?= multi_single_query($dbh, "SELECT count(ordini.id) FROM ordini, utenti, gruppi WHERE $addq AND ordini.ora>=$dal AND ordini.ora<=$al and ordini.idutente=utenti.id AND utenti.idgruppo=gruppi.id AND gruppi.id=".$data["id"]); ?></td>
 						<td><?= show_prezzo(multi_single_query($dbh, "SELECT sum(ordini.prezzo) FROM ordini, utenti, gruppi WHERE $addq AND ora>=$dal AND ora<=$al and ordini.idutente=utenti.id AND utenti.idgruppo=gruppi.id AND gruppi.id=".$data["id"])); ?>&euro;</td>
 					</tr>
-					<?
+					<?php
 						if ($_REQUEST["dett"][0]==$tp & $_REQUEST["dett"][1]==$data["id"]){
 							?>
 							<tr>
@@ -99,7 +99,7 @@ if ($_REQUEST["invia"]){
 											<td align="right">Quantita</td>
 											<td align="right">Valore</td>
 										</tr>
-										<?
+										<?php
 												$res2=multi_query($dbh, "SELECT ordini.articolo, count(ordini.id) as quantita ,sum(ordini.prezzo) as prezzo  FROM ordini, utenti, gruppi WHERE $addq AND ordini.ora>=$dal AND ordini.ora<=$al and ordini.idutente=utenti.id AND utenti.idgruppo=gruppi.id AND gruppi.id=".$data["id"]." GROUP BY ordini.articolo ORDER BY ordini.articolo" );
 												$nr2=multi_num_rows($res2);
 												if ($nr2==0){
@@ -113,7 +113,7 @@ if ($_REQUEST["invia"]){
 															<td align="right"><?= $dataArt["quantita"] ?></td>
 															<td align="right"><?= show_prezzo($dataArt["prezzo"]) ?>&euro;</td>
 														</tr>
-													<?
+													<?php
 												}
 
 										?>
@@ -121,17 +121,17 @@ if ($_REQUEST["invia"]){
 									</table>
 								</td>
 							</tr>
-							<?
+							<?php
 						}
 
 					?>
 
-					<? } ?>
+					<?php } ?>
 
-				<? } ?>
+				<?php } ?>
 
 			</table>
-<? } ?>
+<?php } ?>
 <br><br>
             <table width='980' border='0' cellspacing='0' cellpadding='3' align='center' style="border:1px solid #cccccc">
                 <form method='POST' action='<?= $_SERVER["PHP_SELF"] ?>'>
@@ -143,6 +143,6 @@ if ($_REQUEST["invia"]){
 				</tr>
 				</form>
             </table>
-				
+
 </body>
 

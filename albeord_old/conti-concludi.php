@@ -1,4 +1,4 @@
-<?
+<?php
 include("core-config.php");
 
 if (!$PRIVILEGI["conti"]) redirect_to("home.php");
@@ -21,22 +21,22 @@ foreach (explode(",", $_REQUEST["articoli"]) as $ido){
 ?>
 
 
-<? head_page() ?>
-<? top_menu() ?><br>
-<? if ($_REQUEST["stampa"]==1) 
+<?php head_page() ?>
+<?php top_menu() ?><br>
+<?php if ($_REQUEST["stampa"]==1)
 			stampawbs($dbh, $IDOperazione , 2);
 			echo "Ok";
-			
-			
-			
-			
+
+
+
+
 
 
 		?>
-		
 
 
-	
+
+
 </body>
 </html>
 

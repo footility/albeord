@@ -1,4 +1,4 @@
-<?
+<?php
 include("core-config.php");
 
 if (!$PRIVILEGI["schede"]) redirect_to("home.php");
@@ -14,12 +14,12 @@ $ST[3]="Pensione Completa";
 	<tr bgcolor='#cccccc'><td bgcolor='#cccccc'  style='border:0px solid #000000; padding:3px'><b>Schede</b></td></tr>
 	<tr>
 	<td bgcolor='#F5F5F5'  >
-	<?
+	<?php
 	$res  = multi_query($dbh, "SELECT * FROM schede WHERE stato=1 AND titolare LIKE '%".$_REQUEST["titolare"]."%' ORDER BY id DESC");
 	if (!multi_num_rows($res)){
 		echo "<tr><td align='center' bgcolor='#ffffff' style='border:0px solid #000000; padding:3px'>Nessuna scheda trovata</td></tr>";
 	}
-	while ($scheda = mysql_fetch_assoc($res)){
+	while ($scheda = mysqli_fetch_assoc($res)){
 		$cnt++;
 		$prezzi = getPrezziScheda($dbh, $scheda["id"]);
 		?>
@@ -44,28 +44,28 @@ $ST[3]="Pensione Completa";
 			</tr>
 			<tr>
 				<td colspan="4">
-				<? if($scheda["tipo"]=="N"){ ?>
+				<?php if($scheda["tipo"]=="N"){ ?>
 					Normale:
 					<table width="100%" style="border-bottom:1px solid #cccccc">
 						<tr>
 							<td>BB</td>
 							<td><?= show_prezzo($scheda["bb"]) ?></td>
-		
+
 							<td>HB</td>
 							<td><?= show_prezzo($scheda["hb"]) ?></td>
-		
+
 							<td>FB</td>
 							<td><?= show_prezzo($scheda["fb"]) ?></td>
 						</tr>
 					</table>
 					<table width="100%">
 						<tr>
-						<? for ($i=1; $i<=$scheda["bambini"]; $i++){ ?>
+						<?php for ($i=1; $i<=$scheda["bambini"]; $i++){ ?>
 							<td nowrap="nowrap">Bambino <?= $i?>: <?=  show_prezzo($ScontiBambini[$i],_PRECENT_) ?>%</td>
-						<? } ?>
+						<?php } ?>
 						</tr>
 					</table>
-				<? }else{ ?>
+				<?php }else{ ?>
 					Forfettatiro:
 					<table width="100%">
 						<tr>
@@ -77,12 +77,12 @@ $ST[3]="Pensione Completa";
 							<td><?=  show_prezzo($scheda["ffb"]) ?></td>
 						</tr>
 					</table>
-				<? } ?> 
+				<?php } ?>
 				</td>
 			</tr>
-			
+
 			<!--
-			<?
+			<?php
 			foreach ($prezzi["trattamenti"] as $trattamento => $parti){
 				?>
 				<tr><td colspan="4" bgcolor="#eeeeee"><strong><?= $ST[$trattamento] ?></strong></td></tr>
@@ -92,7 +92,7 @@ $ST[3]="Pensione Completa";
 					<td style="border-bottom:1px solid #eeeeee" align="right"><strong>Parziale</strong></td>
 					<td style="border-bottom:1px solid #eeeeee" align="right"><strong>Totale</strong></td>
 				</tr>
-				<?
+				<?php
 				foreach ($parti as $parte){
 					?>
 					<tr>
@@ -101,25 +101,25 @@ $ST[3]="Pensione Completa";
 						<td style="border-bottom:1px solid #eeeeee" align="right"><?= show_prezzo($parte["parziale"]) ?></td>
 						<td style="border-bottom:1px solid #eeeeee" align="right"><?= show_prezzo($parte["totale"]) ?></td>
 					</tr>
-					<?
-				} 
+					<?php
+				}
 				?>
 				<tr><td colspan="4" bgcolor="#ffffff">&nbsp;</td></tr>
-				<?
+				<?php
 			}
 			if(count($prezzi["servizi+"])){
 				?>
 				<tr>
 					<td colspan="4" bgcolor="#eeeeee"><strong>Extra</strong></td>
 				</tr>
-				<?
+				<?php
 				foreach ($prezzi["servizi+"] as $idservizio => $data){
 					?>
 					<tr>
 						<td colspan="3" style="border-bottom:1px solid #eeeeee">&nbsp;&nbsp;<?= $data["nome"] ?></td>
 						<td align="right" style="border-bottom:1px solid #eeeeee"><?= show_prezzo($data["prezzo"]) ?></td>
 					</tr>
-					<?
+					<?php
 				}
 			}
 			?>
@@ -127,29 +127,29 @@ $ST[3]="Pensione Completa";
 				<td><strong>Subtotale</strong></td>
 				<td colspan="3" align="right"><?= show_prezzo($prezzi["subtotale"]) ?></td>
 			</tr>
-			<?
+			<?php
 			foreach ((array)$prezzi["servizi-"] as $idservizio => $data){
 				?>
 					<tr>
 						<td colspan="3" style="border-bottom:1px solid #eeeeee">&nbsp;&nbsp;<?= $data["nome"] ?></td>
 						<td align="right" style="border-bottom:1px solid #eeeeee">-<?= show_prezzo($data["prezzo"]) ?></td>
 					</tr>
-					<?
+					<?php
 			}
-			
+
 			?>-->
 			<tr>
 				<td colspan="3" style="border-bottom:1px solid #eeeeee"><strong>Totale</strong></td>
 				<td align="right" style="border-bottom:1px solid #eeeeee"><strong><?= show_prezzo($prezzi["totale"]) ?></strong></td>
 			</tr>
-			<?
+			<?php
 		?>
 		</table>
-		<? if($cnt<multi_num_rows($res)){ ?>
+		<?php if($cnt<multi_num_rows($res)){ ?>
 		<br />
-		<? } ?>
-		
-		<?
+		<?php } ?>
+
+		<?php
 	}
 	?>
 		</td>
